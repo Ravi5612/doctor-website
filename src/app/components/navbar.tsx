@@ -59,7 +59,7 @@ export default function Navbar() {
     { name: "Emergency Care", href: "/services/emergency-care" },
   ];
 
-  const getLinkClassName = (href, isMobile = false) => {
+  const getLinkClassName = (href: string, isMobile = false) => {
     const baseClasses = "font-medium transition duration-300";
     const activeClasses = "text-emerald-400 border-b-2 border-emerald-400";
     const inactiveClasses = "text-gray-300 hover:text-emerald-300";
