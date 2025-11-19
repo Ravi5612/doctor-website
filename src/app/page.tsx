@@ -1,6 +1,6 @@
 "use client";
 
-import { Link } from "wouter";
+import Link from "next/link";
 import { Button } from "@/app/components/ui/button";
 import { Card, CardContent } from "@/app/components/ui/card";
 import { Badge } from "@/app/components/ui/badge";
