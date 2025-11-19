@@ -1,11 +1,9 @@
 "use client";
-
-import Link from "next/link";
+import Link from "next/link"; // ✅ Changed from wouter
 import { Button } from "@/app/components/ui/button";
 import { Card, CardContent } from "@/app/components/ui/card";
 import { Badge } from "@/app/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/app/components/ui/avatar";
-
 import { Activity, Heart, Zap, Users, Award, Clock, Star, CheckCircle, Shield, Headphones, TrendingUp } from "lucide-react";
 import {
   Carousel,
@@ -14,30 +12,16 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/app/components/ui/carousel";
-// import heroImage from "./attached_assets/generated_images/Physiotherapy_treatment_hero_image_468bdbed.png";
-// import exerciseImage from "./assets/generated_images/Exercise_rehabilitation_session_57392d86.png";
-// import sportsImage from "./assets/generated_images/Sports_massage_therapy_4a565563.png";
-// import equipmentImage from "./assets/generated_images/Equipment_and_machines_be3b0935.png";
-// import groupImage from "./assets/generated_images/Group_therapy_class_4d3f48b6.png";
-// import patientImage1 from "./assets/generated_images/Happy_patient_testimonial_1_31b89505.png";
-// import patientImage2 from "./assets/generated_images/Happy_patient_testimonial_2_b2bd3760.png";
-// // import clinicInterior from "./assets/generated_images/Clinic_facility_interior_e87d8eb3.png";
-// import elderlyImage from "./assets/generated_images/Elderly_care_physiotherapy_d8e42e85.png";
-// import athleteImage from "./assets/generated_images/Sports_athlete_treatment_62f83cba.png";
 import Autoplay from "embla-carousel-autoplay";
 import { useRef } from "react";
-
 export default function HomePage() {
-  // ✅ Autoplay plugin with proper config
   const autoplayPlugin = useRef(
     Autoplay({ 
-      delay: 1000,
+      delay: 4000,
       stopOnInteraction: false,
       stopOnMouseEnter: true,
     })
   );
-
-  // ✅ ADD THESE IMAGES
   const heroSlides = [
     {
       image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&q=80",
@@ -100,53 +84,49 @@ export default function HomePage() {
       description: "Long-term management and treatment for chronic issues.",
     },
   ];
-
   const whyChooseUs = [
     { stat: "15+", label: "Years Experience", icon: Award },
     { stat: "10,000+", label: "Successful Treatments", icon: Users },
     { stat: "24/7", label: "Emergency Support", icon: Clock },
     { stat: "98%", label: "Patient Satisfaction", icon: Star },
   ];
-
-  //todo: remove mock functionality
   const testimonials = [
-  {
-    name: "Sarah Mitchell",
-    condition: "Sports Injury",
-    rating: 5,
-    image: "https://i.pravatar.cc/150?img=1",
-    text: "Exceptional care! The team helped me recover from my knee injury faster than I expected. Highly professional and caring.",
-  },
-  {
-    name: "John Davis",
-    condition: "Back Pain",
-    rating: 5,
-    image: "https://i.pravatar.cc/150?img=3",
-    text: "After years of chronic back pain, I finally found relief. The physiotherapists here are truly experts in their field.",
-  },
-  {
-    name: "Emma Wilson",
-    condition: "Post-Surgery",
-    rating: 5,
-    image: "https://i.pravatar.cc/150?img=5",
-    text: "The post-surgery rehabilitation program was perfectly tailored to my needs. I'm back to my normal activities now!",
-  },
-  {
-    name: "Michael Chen",
-    condition: "Chronic Pain",
-    rating: 5,
-    image: "https://i.pravatar.cc/150?img=7",
-    text: "The holistic approach to my chronic pain management has been life-changing. I can finally enjoy activities I love again.",
-  },
-];
-const galleryImages = [
-  { src: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80", alt: "Rehabilitation exercises" },
-  { src: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80", alt: "Sports therapy session" },
-  { src: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80", alt: "Modern equipment" },
-  { src: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800&q=80", alt: "Group therapy" },
-  { src: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&q=80", alt: "Clinic interior" },
-];
-
+    {
+      name: "Sarah Mitchell",
+      condition: "Sports Injury",
+      rating: 5,
+      image: "https://i.pravatar.cc/150?img=1",
+      text: "Exceptional care! The team helped me recover from my knee injury faster than I expected. Highly professional and caring.",
+    },
+    {
+      name: "John Davis",
+      condition: "Back Pain",
+      rating: 5,
+      image: "https://i.pravatar.cc/150?img=3",
+      text: "After years of chronic back pain, I finally found relief. The physiotherapists here are truly experts in their field.",
+    },
+    {
+      name: "Emma Wilson",
+      condition: "Post-Surgery",
+      rating: 5,
+      image: "https://i.pravatar.cc/150?img=5",
+      text: "The post-surgery rehabilitation program was perfectly tailored to my needs. I'm back to my normal activities now!",
+    },
+    {
+      name: "Michael Chen",
+      condition: "Chronic Pain",
+      rating: 5,
+      image: "https://i.pravatar.cc/150?img=7",
+      text: "The holistic approach to my chronic pain management has been life-changing. I can finally enjoy activities I love again.",
+    },
+  ];
+  const galleryImages = [
+    { src: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80", alt: "Rehabilitation exercises" },
+    { src: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80", alt: "Sports therapy session" },
+    { src: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80", alt: "Modern equipment" },
+    { src: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800&q=80", alt: "Group therapy" },
+    { src: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&q=80", alt: "Clinic interior" },
+  ];
   const features = [
     {
       icon: Shield,
@@ -169,7 +149,6 @@ const galleryImages = [
       description: "98% of our patients report significant improvement in their condition.",
     },
   ];
-
   const treatmentProcess = [
     {
       step: "1",
@@ -197,15 +176,14 @@ const galleryImages = [
       description: "Education and tools to maintain your health and prevent future injuries.",
     },
   ];
-
   return (
     <div className="min-h-screen">
       {/* Hero Carousel */}
-     <section className="relative overflow-hidden">
+      <section className="relative overflow-hidden">
         <Carousel
           opts={{
             align: "start",
-            loop: true,  // ✅ Infinite loop
+            loop: true,
           }}
           plugins={[autoplayPlugin.current]}
           className="w-full"
@@ -237,19 +215,12 @@ const galleryImages = [
                       </p>
                       <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                         <Link href="/appointment">
-                          <Button
-                            size="lg"
-                            className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-base"
-                          >
+                          <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-base">
                             Book Appointment Now
                           </Button>
                         </Link>
                         <Link href="/services">
-                          <Button
-                            size="lg"
-                            variant="outline"
-                            className="font-bold text-base hover-elevate"
-                          >
+                          <Button size="lg" variant="outline" className="font-bold text-base hover-elevate">
                             Learn More
                           </Button>
                         </Link>
@@ -266,7 +237,53 @@ const galleryImages = [
           </div>
         </Carousel>
       </section>
-
+      {/* Features Section */}
+      <section className="py-20 bg-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {features.map((feature, index) => (
+              <div key={index} className="text-center">
+                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <feature.icon className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="text-lg font-bold mb-2">{feature.title}</h3>
+                <p className="text-muted-foreground text-sm">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      {/* Services Overview */}
+      <section className="py-20 bg-muted/30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Our Services</h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Comprehensive physiotherapy solutions tailored to your specific needs
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {services.map((service, index) => (
+  <Card key={index} className="hover:shadow-lg transition-all hover-elevate">
+    <CardContent className="p-6">
+      <div className="w-12 h-12 bg-primary/10 rounded-md flex items-center justify-center mb-4">
+        <service.icon className="h-6 w-6 text-primary" />
+      </div>
+      <h3 className="text-xl font-bold mb-2">{service.title}</h3>
+      <p className="text-muted-foreground mb-4">{service.description}</p>
+      {/* ✅ FIXED */}
+      <Link 
+        href="/services" 
+        className="text-primary hover:text-primary/80 font-medium text-sm inline-flex items-center gap-1"
+      >
+        Learn More →
+      </Link>
+    </CardContent>
+  </Card>
+))}
+          </div>
+        </div>
+      </section>
       {/* Features Section */}
       <section className="py-20 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -480,14 +497,14 @@ const galleryImages = [
               </CardContent>
             </Card>
           </div>
-
-          <div className="text-center mt-8">
-            <Link href="/faq">
-              <Button variant="outline" size="lg" className="hover-elevate" data-testid="button-view-faq">
-                View All FAQs
-              </Button>
-            </Link>
-          </div>
+<div className="text-center mt-8">
+  {/* ✅ FIXED */}
+  <Link href="/faq">
+    <Button variant="outline" size="lg" className="hover-elevate">
+      View All FAQs
+    </Button>
+  </Link>
+</div>
         </div>
       </section>
 
@@ -500,16 +517,16 @@ const galleryImages = [
           <p className="text-lg mb-8 opacity-90 max-w-2xl mx-auto">
             Book your appointment today and take the first step towards a pain-free life
           </p>
-          <Link href="/appointment">
-            <Button
-              size="lg"
-              variant="secondary"
-              className="font-bold text-base hover-elevate"
-              data-testid="button-cta-book"
-            >
-              Book Your Appointment
-            </Button>
-          </Link>
+        {/* ✅ FIXED */}
+<Link href="/appointment">
+  <Button
+    size="lg"
+    variant="secondary"
+    className="font-bold text-base hover-elevate"
+  >
+    Book Your Appointment
+  </Button>
+</Link>
         </div>
       </section>
     </div>
