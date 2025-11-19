@@ -1,36 +1,21 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link, useLocation } from "wouter";
 import { useState, useEffect } from "react";
-
-// NOTE: Remember to add the custom blinking animation to your global CSS file:
-/*
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-.animate-blink {
-  animation: blink 1.5s infinite;
-}
-*/
+import { Moon, Sun, Menu, X } from "lucide-react";
+import { useTheme } from "./ThemeProvider";
+import { Button } from "@/app/components/ui/button";
 
 export default function Navbar() {
-  const pathname = usePathname();
+  const [location] = useLocation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // New state for mobile menu
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
-  // Scroll effect logic
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) { // Change state after scrolling 50px
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 10);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -40,187 +25,272 @@ export default function Navbar() {
   };
 
   const mainNavItems = [
-    { name: "Home", href: "/" },
-    { name: "About", href: "/about" },
-    { name: "Services", href: "/services" },
-    { name: "Our Doctors", href: "/doctors" },
-    { name: "Blog", href: "/blog" },
-    { name: "Contact", href: "/contact" },
+    { name: "HOME", href: "/" },
+    { name: "ABOUT US", href: "/about" },
+    { name: "SERVICES", href: "/services" },
+    { name: "CONDITIONS", href: "/conditions" },
+    { name: "BLOG", href: "/blog" },
+    { name: "CONTACT", href: "/contact" },
   ];
 
-  const servicePages = [
-    { name: "General Checkup", href: "/services/general-checkup" },
-    { name: "Dental Care", href: "/services/dental-care" },
-    { name: "Cardiology", href: "/services/cardiology" },
-    { name: "Orthopedics", href: "/services/orthopedics" },
-    { name: "Dermatology", href: "/services/dermatology" },
-    { name: "Pediatrics", href: "/services/pediatrics" },
-    { name: "Lab Tests", href: "/services/lab-tests" },
-    { name: "Emergency Care", href: "/services/emergency-care" },
+  const aboutSubItems = [
+    { name: "Our Team", href: "/about/team" },
+    { name: "Our Clinic", href: "/about/clinic" },
+    { name: "Our Approach", href: "/about/approach" },
   ];
 
-  const getLinkClassName = (href: string, isMobile = false) => {
-    const baseClasses = "font-medium transition duration-300";
-    const activeClasses = "text-emerald-400 border-b-2 border-emerald-400";
-    const inactiveClasses = "text-gray-300 hover:text-emerald-300";
-    
-    // Mobile specific classes
-    const mobileBaseClasses = "block px-3 py-2 rounded-md text-base";
-    const mobileActiveClasses = "bg-slate-800 text-emerald-400";
-    const mobileInactiveClasses = "hover:bg-slate-800 hover:text-emerald-300";
+  const servicesSubItems = [
+    { name: "Physiotherapy", href: "/services/physiotherapy" },
+    { name: "Sports Injury Treatment", href: "/services/sports-injury" },
+    { name: "Rehabilitation", href: "/services/rehabilitation" },
+    { name: "Massage Therapy", href: "/services/massage" },
+    { name: "Dry Needling", href: "/services/dry-needling" },
+    { name: "Exercise Prescription", href: "/services/exercise" },
+  ];
 
-    if (pathname === href) {
-      return isMobile 
-        ? `${mobileBaseClasses} ${mobileActiveClasses}`
-        : `${baseClasses} ${activeClasses} pb-1 text-sm`;
-    }
-    return isMobile 
-      ? `${mobileBaseClasses} ${mobileInactiveClasses} text-gray-300`
-      : `${baseClasses} ${inactiveClasses} text-sm`;
+  const getLinkClassName = (href: string) => {
+    const isActive = location === href;
+    return isActive
+      ? "text-primary font-bold text-sm hover:text-primary/80 transition"
+      : "text-foreground font-medium text-sm hover:text-primary transition";
   };
 
-  // Dynamic Classes - REVERSED LOGIC
-  const navbarClasses = `
-    fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out
-    ${isScrolled 
-      ? "bg-transparent shadow-none border-b border-transparent" // Transparent and no shadow on scroll
-      : "bg-slate-950 shadow-xl border-b border-slate-800" // Dark and shadow at the top
-    }
-  `;
-
-  const contentHeightClass = isScrolled ? "h-16" : "h-20";
-  const logoSizeClass = isScrolled ? "text-2xl" : "text-3xl";
-  const logoIconSizeClass = isScrolled ? "text-3xl" : "text-4xl";
-  const ctaPaddingClass = isScrolled ? "px-5 py-2" : "px-6 py-3";
-  // The contact number is hidden when transparent for a cleaner look
-  const contactVisibilityClass = isScrolled ? "hidden" : "flex";
-
-
   return (
-    <nav className={navbarClasses}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className={`flex justify-between items-center transition-all duration-300 ease-in-out ${contentHeightClass}`}>
-          {/* Logo/Brand */}
-          <div className="flex-shrink-0">
-            <Link href="/" className={`${logoSizeClass} font-bold bg-gradient-to-r from-emerald-400 to-emerald-500 bg-clip-text text-transparent hover:from-emerald-300 hover:to-emerald-400 transition flex items-center gap-2`}>
-              <span className={logoIconSizeClass}>🏥</span>
-              <span>MediCare</span>
-            </Link>
-          </div>
+    <>
+      {/* Green Contact Bar - NOT sticky, scrolls away */}
+      <div
+        className={`bg-green-900 text-white px-4 sm:px-6 lg:px-8 transition-all duration-300 ${
+          isScrolled ? "h-0 py-0 overflow-hidden" : "h-auto py-3"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto flex justify-end items-center gap-6 text-sm">
+          <a
+            href="tel:0283229022"
+            className="flex items-center gap-2 hover:text-green-200 transition"
+            data-testid="link-phone"
+          >
+            <span>📞</span>
+            <span>02 8322 9022</span>
+          </a>
+          <a
+            href="mailto:info@burwoodphysio.com.au"
+            className="flex items-center gap-2 hover:text-green-200 transition"
+            data-testid="link-email"
+          >
+            <span>✉️</span>
+            <span>info@burwoodphysio.com.au</span>
+          </a>
+        </div>
+      </div>
 
-          {/* Navigation Links and Contact Info (Desktop) */}
-          <div className="hidden lg:flex items-center gap-8">
-            {/* Main Links */}
-            <ul className="flex gap-6 items-center">
-              {mainNavItems.map((item) => (
-                <li key={item.name}>
-                  {item.name === "Services" ? (
-                    <div className="relative group">
-                      <button
-                        className={getLinkClassName(item.href)}
-                        onMouseEnter={() => setIsDropdownOpen(true)}
-                        onMouseLeave={() => setIsDropdownOpen(false)}
-                      >
-                        {item.name} ▼
-                      </button>
-                      {/* Dropdown Menu */}
-                      <div
-                        className="absolute left-0 mt-0 w-56 bg-slate-900 border border-slate-700 rounded-lg shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-10"
-                        onMouseEnter={() => setIsDropdownOpen(true)}
-                        onMouseLeave={() => setIsDropdownOpen(false)}
-                      >
-                        {servicePages.map((service, index) => (
-                          <Link
-                            key={service.name}
-                            href={service.href}
-                            className={`block px-5 py-3 text-sm text-gray-300 hover:text-emerald-400 hover:bg-slate-800 transition ${
-                              index === 0 ? "rounded-t-lg" : ""
-                            } ${index === servicePages.length - 1 ? "rounded-b-lg" : ""}`}
-                          >
-                            {service.name}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  ) : (
-                    <Link href={item.href} className={getLinkClassName(item.href)}>
-                      {item.name}
-                    </Link>
-                  )}
-                </li>
-              ))}
-            </ul>
-
-            {/* Highlighted Contact Number and CTA Button */}
-            <div className={`items-center gap-4 pl-4 border-l border-slate-800 ${contactVisibilityClass}`}>
-              {/* Contact Number - BLINKING RED */}
-              <div className="flex items-center gap-2 text-gray-300 animate-blink">
-                <span className="text-red-500 text-xl">🚨</span>
-                <div className="flex flex-col text-xs">
-                  <span className="text-red-400 font-bold">EMERGENCY CALL</span>
-                  <a href="tel:+919876543210" className="text-red-500 font-extrabold hover:text-red-400 transition">
-                    +91 6239408981
-                  </a>
-                </div>
+      {/* Main Navbar - STICKY, stays at top */}
+      <nav className="sticky top-0 left-0 right-0 bg-background border-b border-border shadow-lg z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-20">
+            {/* Logo */}
+            <Link href="/" data-testid="link-logo" className="flex flex-col cursor-pointer">
+              <div className="text-2xl font-bold flex items-center gap-1">
+                <span className="text-primary">MED</span>
+                <span className="text-primary/80">Cares</span>
               </div>
+            </Link>
 
-              {/* CTA Button */}
-              <Link
-                href="/appointments"
-                className={`bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white rounded-lg font-semibold transition duration-300 text-sm shadow-lg shadow-emerald-600/30 ${ctaPaddingClass}`}
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center gap-8">
+              <ul className="flex gap-6 items-center">
+                {mainNavItems.map((item) => (
+                  <li key={item.name}>
+                    {item.name === "ABOUT US" ? (
+                      <div className="relative group">
+                        <button className="text-foreground font-medium text-sm hover:text-primary transition flex items-center gap-1">
+                          {item.name}
+                          <span className="text-xs">▼</span>
+                        </button>
+                        <div className="absolute left-0 mt-2 w-48 bg-card border border-border rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-10">
+                          {aboutSubItems.map((subItem) => (
+                            <Link
+                              key={subItem.href}
+                              href={subItem.href}
+                              className="block px-4 py-3 text-sm text-card-foreground hover:bg-primary hover:text-primary-foreground transition first:rounded-t-md last:rounded-b-md"
+                              data-testid={`link-${subItem.name.toLowerCase().replace(/\s+/g, '-')}`}
+                            >
+                              {subItem.name}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ) : item.name === "SERVICES" ? (
+                      <div className="relative group">
+                        <button className="text-foreground font-medium text-sm hover:text-primary transition flex items-center gap-1">
+                          {item.name}
+                          <span className="text-xs">▼</span>
+                        </button>
+                        <div className="absolute left-0 mt-2 w-56 bg-card border border-border rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-10">
+                          {servicesSubItems.map((subItem) => (
+                            <Link
+                              key={subItem.href}
+                              href={subItem.href}
+                              className="block px-4 py-3 text-sm text-card-foreground hover:bg-primary hover:text-primary-foreground transition first:rounded-t-md last:rounded-b-md"
+                              data-testid={`link-${subItem.name.toLowerCase().replace(/\s+/g, '-')}`}
+                            >
+                              {subItem.name}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <Link
+                        href={item.href}
+                        className={getLinkClassName(item.href)}
+                        data-testid={`link-${item.name.toLowerCase()}`}
+                      >
+                        {item.name}
+                      </Link>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Theme Toggle & CTA */}
+            <div className="hidden lg:flex items-center gap-4">
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={toggleTheme}
+                data-testid="button-theme-toggle"
+                className="hover-elevate"
               >
-                Book Appointment
+                {theme === "dark" ? (
+                  <Sun className="h-5 w-5" />
+                ) : (
+                  <Moon className="h-5 w-5" />
+                )}
+              </Button>
+              <Link href="/appointment">
+                <Button
+                  variant="default"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold shadow-md"
+                  data-testid="button-book-appointment"
+                >
+                  BOOK APPOINTMENT
+                </Button>
+              </Link>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <div className="lg:hidden flex items-center gap-2">
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={toggleTheme}
+                data-testid="button-theme-toggle-mobile"
+                className="hover-elevate"
+              >
+                {theme === "dark" ? (
+                  <Sun className="h-5 w-5" />
+                ) : (
+                  <Moon className="h-5 w-5" />
+                )}
+              </Button>
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={toggleMobileMenu}
+                data-testid="button-mobile-menu"
+                className="hover-elevate"
+              >
+                {isMobileMenuOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden bg-card border-t border-border shadow-sm">
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+              {mainNavItems.map((item) =>
+                item.name === "ABOUT US" ? (
+                  <div key={item.name} className="space-y-1">
+                    <Link href={item.href}>
+                      <a
+                        onClick={toggleMobileMenu}
+                        className="block px-3 py-2 text-base font-medium text-card-foreground hover:text-primary"
+                        data-testid="link-about-mobile"
+                      >
+                        {item.name}
+                      </a>
+                    </Link>
+                    <div className="pl-4 space-y-1">
+                      {aboutSubItems.map((subItem) => (
+                        <Link key={subItem.href} href={subItem.href}>
+                          <a
+                            onClick={toggleMobileMenu}
+                            className="block px-3 py-2 text-sm text-muted-foreground hover:text-primary"
+                            data-testid={`link-${subItem.name.toLowerCase().replace(/\s+/g, '-')}-mobile`}
+                          >
+                            {subItem.name}
+                          </a>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ) : item.name === "SERVICES" ? (
+                  <div key={item.name} className="space-y-1">
+                    <Link href={item.href}>
+                      <a
+                        onClick={toggleMobileMenu}
+                        className="block px-3 py-2 text-base font-medium text-card-foreground hover:text-primary"
+                        data-testid="link-services-mobile"
+                      >
+                        {item.name}
+                      </a>
+                    </Link>
+                    <div className="pl-4 space-y-1">
+                      {servicesSubItems.map((subItem) => (
+                        <Link key={subItem.href} href={subItem.href}>
+                          <a
+                            onClick={toggleMobileMenu}
+                            className="block px-3 py-2 text-sm text-muted-foreground hover:text-primary"
+                            data-testid={`link-${subItem.name.toLowerCase().replace(/\s+/g, '-')}-mobile`}
+                          >
+                            {subItem.name}
+                          </a>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <Link key={item.name} href={item.href}>
+                    <a
+                      onClick={toggleMobileMenu}
+                      className="block px-3 py-2 text-base font-medium text-card-foreground hover:text-primary"
+                      data-testid={`link-${item.name.toLowerCase()}-mobile`}
+                    >
+                      {item.name}
+                    </a>
+                  </Link>
+                )
+              )}
+              <Link href="/appointment">
+                <Button
+                  onClick={toggleMobileMenu}
+                  variant="default"
+                  className="w-full mt-4 bg-primary hover:bg-primary/90 text-primary-foreground font-bold"
+                  data-testid="button-book-appointment-mobile"
+                >
+                  BOOK APPOINTMENT
+                </Button>
               </Link>
             </div>
           </div>
-
-          {/* Mobile Menu Button */}
-          <div className="lg:hidden">
-            <button 
-              onClick={toggleMobileMenu}
-              className="text-emerald-400 hover:text-emerald-300 text-2xl transition focus:outline-none"
-            >
-              {isMobileMenuOpen ? '✕' : '☰'}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Menu Panel */}
-      <div className={`lg:hidden ${isMobileMenuOpen ? 'block' : 'hidden'} bg-slate-900 pb-3 transition-all duration-300 ease-in-out`}>
-        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-          {mainNavItems.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              onClick={toggleMobileMenu} // Close menu on link click
-              className={getLinkClassName(item.href, true)}
-            >
-              {item.name}
-            </Link>
-          ))}
-          
-          {/* Mobile CTA Button */}
-          <Link
-            href="/appointments"
-            onClick={toggleMobileMenu}
-            className="block w-full text-center bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white rounded-md font-semibold transition duration-300 text-base mt-4 py-2"
-          >
-            Book Appointment
-          </Link>
-
-          {/* Mobile Emergency Contact */}
-          <div className="flex items-center justify-center gap-2 text-gray-300 animate-blink pt-4">
-            <span className="text-red-500 text-xl">🚨</span>
-            <div className="flex flex-col text-xs">
-              <span className="text-red-400 font-bold">EMERGENCY CALL</span>
-              <a href="tel:+919876543210" className="text-red-500 font-extrabold hover:text-red-400 transition text-base">
-                +91 6239408981
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav>
+        )}
+      </nav>
+    </>
   );
 }

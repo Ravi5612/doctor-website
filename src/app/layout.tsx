@@ -1,17 +1,15 @@
-import Navbar from "@/app/components/navbar";
-import './globals.css';
+import "./globals.css";
+import { ClientLayout } from "./client-layout";
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
-        <Navbar />
-        <h1 className="text-red-600 text-4xl font-bold">
-  Tailwind Working 🎉
-</h1>
-
-
-        {children}
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );

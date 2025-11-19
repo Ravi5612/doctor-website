@@ -1,0 +1,187 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
+
+export default function Navbar() {
+  const pathname = usePathname();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [showTopBar, setShowTopBar] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  // Scroll effect logic
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Hide top bar when scrolling down, show when scrolling up
+      if (currentScrollY > lastScrollY && currentScrollY > 50) {
+        setShowTopBar(false);
+      } else {
+        setShowTopBar(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
+
+  const mainNavItems = [
+    { name: "HOME", href: "/" },
+    { name: "ABOUT US", href: "/about" },
+    { name: "BLOGS", href: "/blogs" },
+    { name: "SERVICES", href: "/services" },
+    { name: "CONTACT", href: "/contact" },
+    { name: "PRIVACY POLICY", href: "/privacy-policy" },
+  ];
+
+  const getLinkClassName = (href: string, isMobile = false) => {
+    const isActive = pathname === href;
+    
+    if (isMobile) {
+      return isActive
+        ? "block px-3 py-2 text-base font-semibold text-green-600 hover:text-green-700"
+        : "block px-3 py-2 text-base font-medium text-gray-700 hover:text-green-600";
+    }
+    
+    return isActive
+      ? "text-gray-900 font-bold text-sm hover:text-green-600 transition"
+      : "text-gray-700 font-medium text-sm hover:text-green-600 transition";
+  };
+
+  return (
+    <nav className="w-full">
+    
+     <div className="bg-green-900 text-white px-4 sm:px-6 lg:px-8 py-2">
+
+        <div className="max-w-7xl mx-auto flex justify-end items-center gap-6 text-sm">
+          <a href="tel:0283229022" className="flex items-center gap-2 hover:text-green-200 transition">
+            <span>📞</span>
+            <span>02 8322 9022</span>
+          </a>
+          <a href="mailto:info@burwoodphysio.com.au" className="flex items-center gap-2 hover:text-green-200 transition">
+            <span>✉️</span>
+            <span>info@burwoodphysio.com.au</span>
+          </a>
+        </div>
+      </div>
+
+   <div className="fixed top-0 left-0 right-0 bg-gray-900 shadow-lg border-b border-gray-800 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-20">
+            {/* Logo/Brand */}
+            <div className="flex-shrink-0">
+              <Link href="/" className="text-2xl font-bold text-green-500 hover:text-green-400 transition flex items-center gap-1">
+                <span>BURWOOD</span>
+                <span className="text-green-600">PHYSIO</span>
+              </Link>
+              <p className="text-xs text-gray-400 font-light tracking-widest">HEALTH AND FITNESS</p>
+            </div>
+
+            {/* Navigation Links (Desktop) */}
+            <div className="hidden lg:flex items-center gap-8">
+              <ul className="flex gap-6 items-center">
+                {mainNavItems.map((item) => (
+                  <li key={item.name}>
+                    {item.name === "ABOUT US" ? (
+                      <div className="relative group">
+                        <button
+                          className="text-white font-medium text-sm hover:text-green-400 transition flex items-center gap-1"
+                          onMouseEnter={() => setIsDropdownOpen(true)}
+                          onMouseLeave={() => setIsDropdownOpen(false)}
+                        >
+                          {item.name}
+                          <span className="text-xs">▼</span>
+                        </button>
+                        {/* Dropdown Menu */}
+                        <div
+                          className="absolute left-0 mt-0 w-48 bg-gray-800 border border-gray-700 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-10"
+                          onMouseEnter={() => setIsDropdownOpen(true)}
+                          onMouseLeave={() => setIsDropdownOpen(false)}
+                        >
+                          <Link
+                            href="/about/team"
+                            className="block px-4 py-3 text-sm text-gray-300 hover:bg-green-600 hover:text-white transition rounded-t-md"
+                          >
+                            Our Team
+                          </Link>
+                          <Link
+                            href="/about/clinic"
+                            className="block px-4 py-3 text-sm text-gray-300 hover:bg-green-600 hover:text-white transition"
+                          >
+                            Our Clinic
+                          </Link>
+                          <Link
+                            href="/about/approach"
+                            className="block px-4 py-3 text-sm text-gray-300 hover:bg-green-600 hover:text-white transition rounded-b-md"
+                          >
+                            Our Approach
+                          </Link>
+                        </div>
+                      </div>
+                    ) : (
+                      <Link href={item.href} className="text-white font-medium text-sm hover:text-green-400 transition">
+                        {item.name}
+                      </Link>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* CTA Button (Desktop) */}
+            <div className="hidden lg:block">
+              <Link
+                href="/appointments"
+                className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-md transition duration-300 text-sm shadow-md"
+              >
+                BOOK APPOINTMENT
+              </Link>
+            </div>
+
+            {/* Mobile Menu Button */}
+          
+          </div>
+        </div>
+      </div>
+
+
+
+      {/* Mobile Menu Panel */}
+      {isMobileMenuOpen && (
+        <div className="lg:hidden bg-gray-800 border-b border-gray-700 shadow-sm">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            {mainNavItems.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                onClick={toggleMobileMenu}
+                className={`${getLinkClassName(item.href, true)} text-gray-300 hover:text-green-400`}
+              >
+                {item.name}
+              </Link>
+            ))}
+            
+            {/* Mobile CTA Button */}
+            <Link
+              href="/appointments"
+              onClick={toggleMobileMenu}
+              className="block w-full text-center bg-green-600 hover:bg-green-700 text-white rounded-md font-bold transition duration-300 text-base mt-4 py-3"
+            >
+              BOOK APPOINTMENT
+            </Link>
+          </div>
+        </div>
+        
+      )}
+    </nav>
+  );
+}
