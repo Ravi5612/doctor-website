@@ -10,7 +10,12 @@ import { useState } from "react";
 import { useToast } from "@/app/components/hooks/use-toast";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
-import Footer from "../components/Footer";
+import dynamic from 'next/dynamic';
+
+// ✅ Dynamic import for Footer to avoid SSR issues
+const Footer = dynamic(() => import("../components/Footer"), {
+  ssr: false,
+});
 
 export default function AppointmentPage() {
   const { toast } = useToast();

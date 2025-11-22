@@ -5,7 +5,12 @@ import { Badge } from "@/app/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/app/components/ui/avatar";
 import { Award, GraduationCap, Heart, Users } from "lucide-react";
 import Link from "next/link";
-import Footer from "../../components/Footer";
+import dynamic from 'next/dynamic';
+
+// ✅ Dynamic import for Footer to avoid SSR issues
+const Footer = dynamic(() => import("../../components/Footer"), {
+  ssr: false,
+});
 
 export default function AboutTeam() {
   const team = [
@@ -198,4 +203,4 @@ export default function AboutTeam() {
       <Footer />
     </>
   );
-}   
+}

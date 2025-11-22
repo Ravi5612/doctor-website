@@ -9,7 +9,12 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/app/components/ui/carousel";
-import Footer from "../../components/Footer";
+import dynamic from 'next/dynamic';
+
+// ✅ Dynamic import for Footer to avoid SSR issues
+const Footer = dynamic(() => import("../../components/Footer"), {
+  ssr: false,
+});
 
 export default function AboutClinic() {
   const facilities = [
@@ -259,39 +264,37 @@ export default function AboutClinic() {
                         <span className="font-bold text-foreground">Closed</span>
                       </div>
                     </div>
+
+                    <div className="mt-6 p-4 bg-primary/5 rounded-md">
+                      <p className="text-sm font-medium text-foreground">Extended Hours Available</p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Early morning and evening appointments to suit your schedule
+                      </p>
+                    </div>
                   </div>
-                </div>
-
-                <div className="bg-primary/10 p-4 rounded-md mb-6">
-                  <p className="text-sm text-muted-foreground">
-                    <strong>Extended Hours:</strong> We offer early morning and evening appointments to accommodate your busy schedule.
-                  </p>
-                </div>
-
-                <div className="bg-muted/50 p-4 rounded-md">
-                  <p className="text-sm font-semibold mb-2">Public Holidays</p>
-                  <p className="text-sm text-muted-foreground">
-                    We're closed on public holidays. For emergency services during this time, please contact us via email.
-                  </p>
                 </div>
               </CardContent>
             </Card>
           </div>
 
-          {/* Map Section (Optional) */}
-          <Card className="mt-8">
-            <CardContent className="p-0">
-              <div className="aspect-video w-full bg-muted/30 rounded-lg overflow-hidden">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3312.8!2d151.10!3d-33.87!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzPCsDUyJzEzLjIiUyAxNTHCsDA2JzAwLjAiRQ!5e0!3m2!1sen!2sau!4v1234567890"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="Clinic Location"
-                ></iframe>
+          {/* CTA */}
+          <Card className="mt-12 bg-primary text-primary-foreground">
+            <CardContent className="p-8 text-center">
+              <h2 className="text-2xl font-bold mb-4">Ready to Visit?</h2>
+              <p className="mb-6 opacity-90">
+                Experience our world-class facilities and caring team. Book your appointment today.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="/appointment">
+                  <button className="bg-background text-primary hover:bg-background/90 font-bold py-3 px-8 rounded-md transition hover-elevate">
+                    Book Appointment
+                  </button>
+                </a>
+                <a href="/contact">
+                  <button className="bg-primary-foreground/10 hover:bg-primary-foreground/20 font-bold py-3 px-8 rounded-md transition hover-elevate">
+                    Contact Us
+                  </button>
+                </a>
               </div>
             </CardContent>
           </Card>

@@ -1,4 +1,5 @@
-import { Link } from "wouter";
+"use client";
+import Link from "next/link";
 import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from "lucide-react";
 
 export default function Footer() {
@@ -69,10 +70,12 @@ export default function Footer() {
             <ul className="space-y-2">
               {quickLinks.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href}>
-                    <a className="text-sm text-muted-foreground hover:text-primary transition" data-testid={`footer-link-${link.name.toLowerCase().replace(/\s+/g, '-')}`}>
-                      {link.name}
-                    </a>
+                  <Link 
+                    href={link.href}
+                    className="text-sm text-muted-foreground hover:text-primary transition" 
+                    data-testid={`footer-link-${link.name.toLowerCase().replace(/\s+/g, '-')}`}
+                  >
+                    {link.name}
                   </Link>
                 </li>
               ))}
@@ -150,15 +153,19 @@ export default function Footer() {
             © {new Date().getFullYear()} Burwood Physio. All rights reserved.
           </p>
           <div className="flex gap-6">
-            <Link href="/privacy-policy">
-              <a className="text-sm text-muted-foreground hover:text-primary transition" data-testid="link-privacy">
-                Privacy Policy
-              </a>
+            <Link 
+              href="/privacy-policy"
+              className="text-sm text-muted-foreground hover:text-primary transition" 
+              data-testid="link-privacy"
+            >
+              Privacy Policy
             </Link>
-            <Link href="/terms">
-              <a className="text-sm text-muted-foreground hover:text-primary transition" data-testid="link-terms">
-                Terms of Service
-              </a>
+            <Link 
+              href="/terms"
+              className="text-sm text-muted-foreground hover:text-primary transition" 
+              data-testid="link-terms"
+            >
+              Terms of Service
             </Link>
           </div>
         </div>

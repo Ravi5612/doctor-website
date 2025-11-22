@@ -8,7 +8,12 @@ import { Label } from "@/app/components/ui/label";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/app/components/hooks/use-toast";
-import Footer from "../components/Footer";
+import dynamic from 'next/dynamic';
+
+// ✅ Dynamic import for Footer to avoid SSR issues
+const Footer = dynamic(() => import("../components/Footer"), {
+  ssr: false,
+});
 
 export default function ContactPage() {
   const { toast } = useToast();

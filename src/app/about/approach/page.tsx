@@ -2,7 +2,12 @@
 
 import { Card, CardContent } from "@/app/components/ui/card";
 import { Target, Users, TrendingUp, Award } from "lucide-react";
-import Footer from "../../components/Footer";
+import dynamic from 'next/dynamic';
+
+// ✅ Dynamically import Footer to avoid SSR issues
+const Footer = dynamic(() => import("../../components/Footer"), {
+  ssr: false,
+});
 
 export default function AboutApproach() {
   const principles = [

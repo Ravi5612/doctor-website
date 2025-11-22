@@ -12,9 +12,13 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/app/components/ui/carousel";
-import Footer from "./components/Footer";
+
 import Autoplay from "embla-carousel-autoplay";
 import { useRef } from "react";
+import dynamic from 'next/dynamic';
+const Footer = dynamic(() => import("./components/Footer"), {
+  ssr: false,
+});
 export default function HomePage() {
   const autoplayPlugin = useRef(
     Autoplay({ 
