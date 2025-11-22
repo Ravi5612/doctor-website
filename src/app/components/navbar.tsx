@@ -68,7 +68,7 @@ export default function Navbar() {
             className="flex items-center gap-2 hover:text-green-200 transition"
           >
             <span>✉️</span>
-            <span>info@burwoodphysio.com.au</span>
+            <span>Ravirai84272@gmail.com</span>
           </a>
         </div>
       </div>

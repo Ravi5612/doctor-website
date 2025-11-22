@@ -12,6 +12,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/app/components/ui/carousel";
+import Footer from "./components/Footer";
 import Autoplay from "embla-carousel-autoplay";
 import { useRef } from "react";
 export default function HomePage() {
@@ -406,6 +407,8 @@ export default function HomePage() {
 </Link>
         </div>
       </section>
+       <Footer />
     </div>
+    
   );
 }
